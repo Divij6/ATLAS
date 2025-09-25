@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 4
+names: ['No gun_phone', 'gun', 'knife', 'violence']
+
+roboflow:
+  workspace: silo-rvgms
+  project: weapons-detection-1ktqx-e2kab
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/silo-rvgms/weapons-detection-1ktqx-e2kab/dataset/1

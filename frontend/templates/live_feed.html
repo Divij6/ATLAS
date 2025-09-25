@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Live Feed</h3>
+
+<!-- Status Alert -->
+<div id="statusAlert" class="alert alert-info">
+  <strong>AI Detection Status:</strong> <span id="statusText">System ready - Click Start to begin</span>
+  <span id="statusBadge" class="badge bg-secondary ms-2">INACTIVE</span>
+</div>
+
+<!-- Model Status -->
+<div id="modelStatus" class="alert alert-secondary">
+  <span class="badge bg-info">Checking AI Models...</span>
+</div>
+
+<div class="row g-3">
+  <!-- Pre-recorded/looping feeds -->
+  <div class="col-md-4">
+    <div class="card">
+      <video class="card-img-top" controls autoplay muted loop playsinline
+             src="{{ url_for('static', filename='videos/video1.mp4') }}"></video>
+      <div class="card-body"><small>Camera 1 (looped video)</small></div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <video class="card-img-top" controls autoplay muted loop playsinline
+             src="{{ url_for('static', filename='videos/video2.mp4') }}"></video>
+      <div class="card-body"><small>Camera 2 (looped video)</small></div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <video class="card-img-top" controls autoplay muted loop playsinline
+             src="{{ url_for('static', filename='videos/video3.mp4') }}"></video>
+      <div class="card-body"><small>Camera 3 (looped video)</small></div>
+    </div>
+  </div>
+
+  <!-- AI-Powered Laptop Camera -->
+  <div class="col-12 mt-3">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">
+          AI-Powered Security Camera
+          <span id="detectionBadge" class="badge bg-secondary ms-2">INACTIVE</span>
+        </h5>
+
+        <!-- Detection Status Panel -->
+        <div id="detectionStatus" class="alert alert-info">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <strong>Status:</strong> <span id="statusText">Ready to start detection</span>
+            </div>
+            <div>
+              <button id="refreshStatus" class="btn btn-sm btn-outline-primary">Refresh</button>
+              <div class="form-check form-switch d-inline-block ms-2">
+                <input class="form-check-input" type="checkbox" id="autoRefresh" checked>
+                <label class="form-check-label" for="autoRefresh">Auto-refresh</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video Stream Container -->
+        <div class="video-container">
+          <img id="localCam"
+               src="/video_feed"
+               width="640"
+               height="480"
+               alt="Camera feed will appear here when started"
+               style="border: 2px solid #dee2e6; border-radius: 8px; background: #000;">
+        </div>
+
+        <!-- Control Buttons - FIXED IDs to match JavaScript -->
+        <div class="detection-controls mt-3">
+          <button id="startDetection" class="btn btn-success me-2">
+            <i class="fas fa-play"></i> Start AI Detection
+          </button>
+          <button id="stopDetection" class="btn btn-danger me-2" disabled>
+            <i class="fas fa-stop"></i> Stop Detection
+          </button>
+          <div class="btn-group ms-2" role="group">
+            <button type="button" class="btn btn-outline-info btn-sm" onclick="window.location.href='/live_threats'">
+              Live Threats
+            </button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.location.href='/neutralized'">
+              Neutralized
+            </button>
+          </div>
+        </div>
+
+        <!-- Threat Level Display -->
+        <div id="threatDisplay" class="mt-3" style="display:none;">
+          <div class="alert alert-warning">
+            <strong>Current Threat Level:</strong> <span id="threatLevel" class="threat-level-normal">Normal</span>
+            <div class="progress mt-2">
+              <div id="confidenceBar" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+            </div>
+            <small id="confidenceText">Confidence: 0%</small>
+          </div>
+        </div>
+
+        <!-- Recent Detections -->
+        <div id="recentDetections" class="mt-3">
+          <h6>Recent Detection Log:</h6>
+          <div id="detectionList" class="list-group" style="max-height: 200px; overflow-y: auto;">
+            <div class="list-group-item text-muted">No recent detections</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- System Information -->
+<div class="row mt-3">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">System Status</h6>
+        <div id="systemStatus">
+          <div class="mb-2">
+            <strong>Detection Engine:</strong>
+            <span id="engineStatus" class="badge bg-secondary">Checking...</span>
+          </div>
+          <div class="mb-2">
+            <strong>Camera Status:</strong>
+            <span id="cameraStatus" class="badge bg-secondary">Ready</span>
+          </div>
+          <div>
+            <strong>Alert System:</strong>
+            <span id="alertStatus" class="badge bg-success">Configured</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">Detection Capabilities</h6>
+        <ul class="list-unstyled mb-0">
+          <li><i class="fas fa-check text-success"></i> Weapon Detection</li>
+          <li><i class="fas fa-check text-success"></i> Crowd Panic Analysis</li>
+          <li><i class="fas fa-check text-success"></i> Real-time Alerts</li>
+          <li><i class="fas fa-check text-success"></i> Automatic Recording</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/livecam.js') }}"></script>
+{% endblock %}
